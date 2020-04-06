@@ -9,27 +9,39 @@ import android.widget.EditText;
 
 import java.util.Locale;
 
+
+//The Main Class
+//AppCompatActivity in the Video
 public class MainActivity extends AppCompatActivity {
 
-    //Initialize Variable
+    //Initialize Variable for all the Button ID's you created in the xml file
     EditText etInput;
     Button btConvert,btClear;
 
+    //Object for TextToSpeech Engine that will convert the Text into the Audio File
     TextToSpeech textToSpeech;
+
+    //There's always an Override method in the Main Class
+    //@Override also explained in the video
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main); //The design layout xml file to which it will refer. Here, it refers to the "activity_main" xml file
 
-        //Assign Variables
+        //Assign Variables declared above to each and every Button by using findViewById...
+        //... to find the ID of the buttons from the xml file so that it links to the Java file...
+        //...and we can assign ant task that the particular tool will perform through the Java file
         etInput = findViewById(R.id.et_input);
         btConvert = findViewById(R.id.bt_convert);
         btClear = findViewById(R.id.bt_clear);
 
+        //Creating a new Object for textToSpeech
+        //getAppliationContext() is to Return the context of the single, global Application object of the current process.
+        //OnInitListener() is nothing but an Interface definition of a callback to be invoked, indicating the completion of the TextToSpeech engine initialization.
         textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
-            public void onInit(int i) {
+            public void onInit(int i) {  //Called to signal the completion of the TextToSpeech engine initialization.
                 if (i == TextToSpeech.SUCCESS){
                     //Select Language
                     int lang = textToSpeech.setLanguage(Locale.ENGLISH);
@@ -37,14 +49,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Setting the button (button variable ID of the Java file) as a clickable item
+        //View.OnClickListener() is an Interface definition for a callback to be invoked, when a view is clicked.
         btConvert.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View view){  //
                 //Get EditText Value
+                //ToString() Returns a string representation of the object.
+                //getText() Returns the Text that the Text View is displaying.
                 String s = etInput.getText().toString();
 
                 //Text Convert to Speech
-                int speech = textToSpeech.speak(s, TextToSpeech.QUEUE_FLUSH, null);
+                //QUEUE_FLUSH  is Queue mode where all entries in the playback queue (media to be played and text to be synthesized) are dropped and replaced by the new entry.
+                int speech = textToSpeech.speak(s, TextToSpeech.QUEUE_FLUSH,null);
             }
         });
 
@@ -52,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 //Clear EditText
-                etInput.setText("");
+                etInput.setText("");  //Clear Button will set the text inside the Text area to blank
             }
         });
 
